@@ -5,13 +5,14 @@ class TasksController < ApplicationController
   # GET /tasks.json
   def index
     if user_signed_in?
-    @tasks = Task.where(:user_id => current_user.id).order("created_at DESC")
+    @tasks = Task.where(:user_id => current_user.id).order(params[:sort])
     end
   end
 
   # GET /tasks/1
   # GET /tasks/1.json
   def show
+    @task = set_task
   end
 
   # GET /tasks/new
@@ -21,6 +22,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
+    @task = set_task
   end
 
   # POST /tasks
