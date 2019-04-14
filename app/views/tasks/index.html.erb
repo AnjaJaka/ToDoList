@@ -7,7 +7,7 @@
       <tr>
         <th><%= link_to "No", :sort => "id" %></th>
         <th><%= link_to "Task", :sort => "title" %></th>
-        <th><%= link_to "Hours left", :sort => "deadline" %></th>
+        <th><%= link_to "Time left", :sort => "deadline" %></th>
         <th><%= link_to "Done", :sort => "done" %></th>
 
       </tr>
@@ -18,9 +18,19 @@
         <tr>
           <td><%= task.id %></td>
           <td><%= link_to task.title, task %></td>
-          <td><%= ((task.deadline-Time.now.utc)/3600).round(2) %></td>
+          <% @time=(task.deadline-Time.now.utc) %>
+          <% if @time<0 %>
+            <td> TIme pass :(</td>
+          <% elsif @time<3600 %>
+            <td><%= (@time/60).round%> min</td>
+          <% elsif @time<86400 %>
+            <td><%= (@time/3600).round%> hours</td>
+          <% elsif @time<31536000 %>
+            <td><%= (@time/86400).round%> days</td>
+            <% else %>
+              <td><%= (@time/31536000).round%> years</td>
+          <% end %>
           <td><%= task.done %></td>
-
         </tr>
       <% end %>
     </tbody>
